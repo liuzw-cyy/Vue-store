@@ -8,15 +8,19 @@
 </template>
 
 <script>
-  import Header from './components/Header'
-  import Footer from './components/Footer'
-  export default {
-      name: 'App',
-      components: {
-          Header,
-          Footer
-      }
-  }
+    import Header from './components/Header'
+    import Footer from './components/Footer'
+    export default {
+        name: 'App',
+        components: {
+            Header,
+            Footer
+        },
+        mounted() {
+            // 基于优化性能考虑，将三级联动的网络请求放在这
+            this.$store.dispatch('categoryList')
+        },
+    }
 </script>
 
 <style>

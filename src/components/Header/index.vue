@@ -57,10 +57,7 @@
               this.$router.push({
                   name:'Search',
                   params:{
-                      keyWords:this.keyWords
-                  },
-                  query:{
-                      k:this.keyWords.toUpperCase()
+                      keyWords:this.keyWords || undefined
                   }
               })
           }

@@ -10,6 +10,12 @@ module.exports = defineConfig({
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
+    },
+    // 代理跨域
+    proxy: {
+      '/api': {
+        target:'http://39.98.123.211'
+      }
     }
 },
 
