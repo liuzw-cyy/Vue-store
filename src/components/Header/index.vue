@@ -54,12 +54,17 @@
       methods: {
           // 编程式路由导航传递参数
           goSearch(){
-              this.$router.push({
-                  name:'Search',
-                  params:{
-                      keyWords:this.keyWords || undefined
+              let location = {
+                      name:'Search',
+                      params:{
+                          keyWords:this.keyWords || undefined}
                   }
-              })
+              //如果存在query参数，添加至location
+              if(this.$route.query) {
+                  location.query = this.$route.query
+              }
+              this.$router.push(location)
+
           }
       },
     }

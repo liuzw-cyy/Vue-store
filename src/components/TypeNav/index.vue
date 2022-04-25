@@ -2,31 +2,28 @@
     <div class="type-nav">
             <div class="container">
                 <div @mouseleave="leaveIndex">
-                    <h2 class="all" @mouseenter="enterShow" @mouseleave="leaveShow">全部商品分类</h2>
+                    <h2 class="all" @mouseenter="enterShow">全部商品分类</h2>
                     <!-- 三级联动 -->
-                    <transition name="sort">
+                    <transition name="sort" @mouseleave="leaveShow">
                         <!-- 过渡动画 -->
                         <div class="sort" v-show="show">
-                        <div class="all-sort-list2" @click="goSearch">
+                        <div class="all-sort-list2">
                             <div class="item"
                             v-for="(c1, index) in categoryList"
                             :key="c1.categoryId"
                             :class="{cur:currentIndex==index}">
-                                <h3 @mouseenter="changeIndex(index)">
-                                    <router-link :to="`/search?categoryName=${c1.categoryName}&categorg1id=${c1.categoryId}`">
-                                    {{c1.categoryName}}</router-link>
+                                <h3 @mouseenter="changeIndex(index)" @click="goSearch1(c1)">
+                                    <a >{{c1.categoryName}}</a>
                                 </h3>
                                 <div class="item-list clearfix">
                                     <div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                                         <dl class="fore">
                                             <dt>
-                                                <router-link :to="`/search?categoryName=${c2.categoryName}&categorg2id=${c2.categoryId}`">
-                                                {{c2.categoryName}}</router-link>
+                                                <a @click="goSearch2(c2)">{{c2.categoryName}}</a>
                                             </dt>
                                             <dd>
                                                 <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                                                    <router-link :to="`/search?categoryName=${c3.categoryName}&categorg1id=${c3.categoryId}`">
-                                                    {{c3.categoryName}}</router-link>
+                                                    <a @click="goSearch3(c3)">{{c3.categoryName}}</a>
                                                 </em>
                                             </dd>
                                         </dl>
@@ -91,10 +88,50 @@
                 this.currentIndex = -1
             },
             // p27编程式路由出现bug，暂未完成，使用路由跳转完成
-            goSearch(event){
-                let element = event.target.dataset
-                console.log(element);
+            goSearch1(c1){
+                let categoryname = c1.categoryName
+                let category1id = c1.categoryId
+
+                // 准备路由跳转的参数
+                let location = {name:'Search'}
+                let query = {categoryname:categoryname, category1id:category1id}
+
+                // 判断如果路由跳转时带有params参数，添加到location中
+                if(this.$route.params) {
+                    location.params = this.$route.params
+                    //动态给location配置对象添加query属性
+                    location.query = query
+                    // 路由跳转
+                    this.$router.push(location)
+                }
+
             },
+            goSearch2(c2){
+                let categoryname = c2.categoryName
+                let category2id = c2.categoryId
+
+                let location = {name:'Search'}
+                let query = {categoryname:categoryname, category2id:category2id}
+                if(this.$route.params) {
+                    location.params = this.$route.params
+                    location.query = query
+                    this.$router.push(location)
+                }
+            },
+            goSearch3(c3){
+                let categoryname = c3.categoryName
+                let category3id = c3.categoryId
+
+                let location = {name:'Search'}
+                let query = {categoryname:categoryname, category3id :category3id }
+                if(this.$route.params) {
+                    location.params = this.$route.params
+                    location.query = query
+                    this.$router.push(location)
+                }
+
+            },
+
             // typeNav展示或者隐藏
             enterShow(){
                 this.show = true
