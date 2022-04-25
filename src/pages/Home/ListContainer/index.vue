@@ -3,12 +3,11 @@
         <div class="sortList clearfix">
                 <div class="center">
                     <!--banner轮播-->
-                    <div class="swiper-container" id="mySwiper">
+                    <div class="swiper-container" ref="mySwiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <img src="./images/banner1.jpg" />
+                            <div class="swiper-slide" v-for="carousel in bannerList" :key="carousel.id">
+                                <img :src="carousel.imgUrl" />
                             </div>
-                           
                         </div>
                         <!-- 如果需要分页器 -->
                         <div class="swiper-pagination"></div>
@@ -102,8 +101,59 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+//引入Swiper
+import Swiper from 'swiper'
+//引入Swiper样式
+import 'swiper/css/swiper.css'
+
+// 轮播图开发
     export default {
         name:'ListContainear',
+        mounted() {
+            this.$store.dispatch('getBannerList')
+        },
+        // 因为dispatch当中涉及到异步结构，v-for遍历的时候结构没有初始化完全
+        // 所以不能直接在mounted钩子中new seiper实例
+        computed:{
+            ...mapState({
+                bannerList:(state) => {
+                    return state.home.bannerList
+                }
+            })
+        },
+        watch:{
+            // 监听bannerList数据的变化
+            bannerList:{
+                handler(newValue, oldValue){
+                    // 如果handler方法执行，代表组件实例身上已经有了属性值，可以执行seiper实例
+                    // 但是这样只能保证BannerList中存在数据，无法保证结构渲染完毕
+                    // nextTick方法：在下次DOM更新循环结束之后执行延迟回调，在修改数据之后立即使用这个方法，获取更新后的DOM
+                    this.$nextTick(() => {
+                        // 当执行回调的时候，服务器数据已返回且v-for渲染结构完毕
+                        // 创建swiper实例
+                        let mySwiper = new Swiper(this.$refs.mySwiper,
+                        {
+                            loop:true,
+                            pagination:{
+                              el: '.swiper-pagination',
+                              clickable: true,
+                            },
+                            // 如果需要前进后退按钮
+                            navigation: {
+                              nextEl: '.swiper-button-next',
+                              prevEl: '.swiper-button-prev',
+                            },
+                            // 如果需要滚动条
+                            scrollbar: {
+                              el: '.swiper-scrollbar',
+                            },
+                        })
+                    })
+
+                }
+            }
+        }
     }
 </script>
 

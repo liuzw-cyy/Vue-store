@@ -2,14 +2,12 @@
 import axios from 'axios'
 // 引入进度条
 import nprogress from 'nprogress'
-//引入进度条样式
-import "nprogress/nprogress.css";
 
 // 创建一个axios实例
 const requests = axios.create({
     // 配置对象
     // 基础路径，发起请求时路径中会出现api
-    baseURL: "/api",
+    baseURL: "/mock",
     timeout: 5000
 })
 
