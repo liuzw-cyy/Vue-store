@@ -4,9 +4,9 @@
                 <div @mouseleave="leaveIndex">
                     <h2 class="all" @mouseenter="enterShow">全部商品分类</h2>
                     <!-- 三级联动 -->
-                    <transition name="sort" @mouseleave="leaveShow">
+                    <transition name="sort">
                         <!-- 过渡动画 -->
-                        <div class="sort" v-show="show">
+                        <div class="sort" v-show="show" @mouseleave="leaveShow">
                         <div class="all-sort-list2">
                             <div class="item"
                             v-for="(c1, index) in categoryList"

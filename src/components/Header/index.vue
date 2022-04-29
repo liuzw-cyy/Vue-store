@@ -34,7 +34,7 @@
                 </h1>
                 <div class="searchArea">
                     <form action="###" class="searchForm">
-                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyWords"/>
+                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword"/>
                         <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
                     </form>
                 </div>
@@ -48,7 +48,7 @@
       name: 'Header',
       data() {
           return {
-              keyWords:''
+              keyword:''
           }
       },
       methods: {
@@ -57,7 +57,7 @@
               let location = {
                       name:'Search',
                       params:{
-                          keyWords:this.keyWords || undefined}
+                          keyword:this.keyword || undefined}
                   }
               //如果存在query参数，添加至location
               if(this.$route.query) {
@@ -66,6 +66,12 @@
               this.$router.push(location)
 
           }
+      },
+      // 通过全局事件总线清除关键字
+      mounted() {
+          this.$bus.$on("clear", () => {
+              this.keyword = ''
+          })
       },
     }
 </script>

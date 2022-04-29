@@ -8,7 +8,7 @@ import mockRequests from './mockRequest'
 export const reqCategoryList = () => {
     return requests({
         url: '/product/getBaseCategoryList',
-        methods: 'get'
+        method: 'get'
     })
 }
 
@@ -16,7 +16,7 @@ export const reqCategoryList = () => {
 export const reqGetBannerList = () => {
     return mockRequests({
         url: '/banners',
-        methods: 'get'
+        method: 'get'
     })
 }
 
@@ -24,6 +24,16 @@ export const reqGetBannerList = () => {
 export const reqGetFloorList = () => {
     return mockRequests({
         url: '/floors',
-        methods:'get'
+        method:'get'
+    })
+}
+
+// 获取搜索模块数据，地址/api/list 请求方式post 需参数
+// 此接口给服务器传递的默认参数至少是一个空对象
+export const reqGetSearchInfo = (params) => {
+    return requests({
+        url: '/list',
+        method: 'post',
+        data:params
     })
 }

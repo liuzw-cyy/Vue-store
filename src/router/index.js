@@ -52,7 +52,7 @@ export default new VueRouter({
         },
         {
             // keyWords用于占位符声明接受params参数（在浏览器路径显示）
-            path: "/search/:keyWords",
+            path: "/search/:keyword?",
             name:'Search',
             component: Search,
             meta: {

@@ -3,7 +3,7 @@ module.exports = defineConfig({
   // 解决控制台公网ip报错问题
   devServer: {
     host: '0.0.0.0',
-  // https:true,
+    // https:true,
     port: 8080,
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
@@ -14,12 +14,12 @@ module.exports = defineConfig({
     // 代理跨域
     proxy: {
       '/api': {
-        target:'http://39.98.123.211'
+        target: 'http://gmall-h5-api.atguigu.cn'
       }
     }
-},
+  },
 
   transpileDependencies: true,
   // 关闭eslint校验功能
-  lintOnSave:false
+  lintOnSave: false
 })

@@ -27,5 +27,9 @@ new Vue({
   // 注册路由
   router,
   store,
+  // 配置全局事件总线
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   devtools: true
 }).$mount('#app')
