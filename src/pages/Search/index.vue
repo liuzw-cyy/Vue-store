@@ -67,7 +67,12 @@
               </li>
             </ul>
           </div>
-          <Pagination/>
+          <Pagination
+          :pageNo="searchParams.pageNo"
+          :pageSize="searchParams.pageSize"
+          :totalPage="total"
+          :continues="5"
+          @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -76,7 +81,7 @@
 
 <script>
     import SearchSelector from './SearchSelector/SearchSelector'
-    import {mapGetters} from 'vuex'
+    import {mapGetters, mapState} from 'vuex'
 
     export default {
         name: 'Search',
@@ -131,7 +136,10 @@
             },
             isDown(){
                 return this.searchParams.order.indexOf('desc') != -1
-            }
+            },
+            ...mapState({
+                total:(state) => state.search.searchList.total
+            })
         },
         methods: {
           getData(){
@@ -210,6 +218,10 @@
               // 更新searchParams参数
               this.searchParams.order = newOrder
               this.getData()
+          },
+          // 获取当前第几页
+          getPageNo(pageNo){
+            
           }
         },
         watch:{
