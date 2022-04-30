@@ -221,7 +221,9 @@
           },
           // 获取当前第几页
           getPageNo(pageNo){
-            
+              // 整理参数，请求服务器数据
+              this.searchParams.pageNo = pageNo
+              this.getData()
           }
         },
         watch:{
