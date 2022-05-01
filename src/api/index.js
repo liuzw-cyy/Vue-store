@@ -37,3 +37,12 @@ export const reqGetSearchInfo = (params) => {
         data:params
     })
 }
+
+// 获取产品详情信息接口，地址/api/item/{skuId}, 请求方式get
+export const reqGoodsInfo = (skuId) => {
+    return requests({
+        url: `/item/${skuId}`,
+        method: 'get',
+        data:skuId
+    })
+}

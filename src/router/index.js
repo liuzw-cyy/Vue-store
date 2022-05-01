@@ -4,13 +4,7 @@ import VueRouter from 'vue-router'
 // 使用router插件
 Vue.use(VueRouter)
 
-// 引入路由插件
-import Home from '@/pages/Home'
-import Login from '@/pages/Login'
-import Search from '@/pages/Search'
-import Register from '@/pages/Register'
-import Detail from '@/pages/Detail'
-
+// 引入路由配置文件
 import routes from './routes'
 
 // 重写push和replace方法解决使用路由编程式导航时控制台警告问题
