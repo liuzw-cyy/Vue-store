@@ -1,4 +1,5 @@
 // 对axios进行二次封装
+import store from '@/store';
 import axios from 'axios'
 // 引入进度条
 import nprogress from 'nprogress'
@@ -15,6 +16,10 @@ const requests = axios.create({
 
 // 请求拦截器
 requests.interceptors.request.use((config) => {
+    // 游客身份ID请求头
+    if (store.state.detail.uuid_token) {
+        config.headers.userTempId = store.state.detail.uuid_token
+    }
     // 进度条开始
     nprogress.start()
     return config

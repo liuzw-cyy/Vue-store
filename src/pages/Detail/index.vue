@@ -67,18 +67,19 @@
                 <dt class="title">{{spuSaleAttr.saleAttrName}}</dt>
                 <dd changepirce="0" :class="{active:spuSaleAttrValue.isChecked==1}"
                 v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
-                :key="spuSaleAttrValue.id">
+                :key="spuSaleAttrValue.id"
+                @click="changeActive(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)">
                 {{spuSaleAttrValue.saleAttrValueName}}</dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -339,6 +340,11 @@
       ImageList,
       Zoom
     },
+    data() {
+      return {
+        skuNum: 1
+      }
+    },
     mounted() {
       // 请求服务器产品详情数据
       this.$store.dispatch('getGoodInfo', this.$route.params.skuid)
@@ -349,7 +355,41 @@
       skuImageList(){
         return this.skuInfo.skuImageList || []
       }
-    }
+    },
+    methods: {
+      // 产品售卖属性值切换高亮
+      changeActive(saleAttrValue, arr) {
+        // 消除全部属性值高亮
+        arr.forEach(item => {
+          item.isChecked = 0
+        })
+        // 点击的那个属性值设为高亮
+        saleAttrValue.isChecked = 1
+      },
+      // 表单元素修改产品个数
+      changeSkuNum(event){
+        // 用户输入文本*1
+        let value = event.target.value * 1
+        // 判断输入是否非法
+        if(isNaN(value) || value < 1) {
+          this.skuNum = 1
+        } else {
+          this.skuNum = parseInt(value)
+        }
+      },
+      // 加入购物车回调函数
+      async addShopcar(){
+        try {
+          await this.$store.dispatch('addAddOrUpdateShopCart', {skuId:this.$route.params.skuid, skuNum:this.skuNum})
+          // 进行路由跳转
+          //会话存储skuInfo数据，方便AddCartSuccess组件调用
+          sessionStorage.setItem('SKUINFO', JSON.stringify(this.skuInfo))
+          this.$router.push({name:'AddCartSuccess', query:{skuNum:this.skuNum}})
+        } catch (error) {
+          alert(error.message)
+        }
+      }
+    },
   }
 </script>
 

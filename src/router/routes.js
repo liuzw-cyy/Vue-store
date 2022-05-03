@@ -6,6 +6,8 @@ import Login from '@/pages/Login'
 import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 
 export default [
     {
@@ -45,6 +47,22 @@ export default [
         path: "/detail/:skuid",
         name:'Detail',
         component: Detail,
+        meta: {
+            showFooter:true
+        }
+    },
+    {
+        path: "/addcartsuccess",
+        name:'AddCartSuccess',
+        component: AddCartSuccess,
+        meta: {
+            showFooter:true
+        }
+    },
+    {
+        path: "/shopcart",
+        name:'ShopCart',
+        component: ShopCart,
         meta: {
             showFooter:true
         }

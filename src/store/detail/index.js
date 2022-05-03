@@ -1,6 +1,8 @@
 // detail模块的store
 
-import { reqGoodsInfo } from '@/api'
+import { reqGoodsInfo, reqAddOrUpdateShopCart } from '@/api'
+// 封装游客身份模块uuid
+import { getUUID } from '@/utils/uuid_token'
 
 const actions = {
     // 获取产品详情
@@ -9,7 +11,17 @@ const actions = {
         if (result.code == 200) {
             commit('GETGOODINFO', result.data)
         }
-    }
+    },
+    // 将产品添加到购物车当中(无返回数据)
+    async addAddOrUpdateShopCart({commit}, {skuId, skuNum}) {
+        let result = await reqAddOrUpdateShopCart (skuId, skuNum)
+        if (result.code == 200) {
+            return 'success'
+        } else {
+            // 加入购物车失败
+            return Promise.reject(new Error('faile'))
+        }
+    },
 }
 const mutations = {
     GETGOODINFO(state, goodInfo) {
@@ -17,7 +29,8 @@ const mutations = {
     }
 }
 const state = {
-    goodInfo:{}
+    goodInfo: {},
+    uuid_token: getUUID()
 }
 const getters = {
     categoryView(state) {
