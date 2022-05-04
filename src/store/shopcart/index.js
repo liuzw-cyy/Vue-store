@@ -26,6 +26,29 @@ const actions = {
         } else {
             return Promise.reject(new Error('faile'))
         }
+    },
+    // 删除选中的商品
+    deleteAllCheckedCart({ dispatch, getters }) {
+        let PromiseAll = []
+        getters.cartList.cartInfoList.forEach(item => {
+            let promise = item.isChecked == 1 ? dispatch('deleteCartListBySkuId', item.skuId) : ''
+            // 将每一次返回的Promise天际到数组之中
+            PromiseAll.push(promise)
+        })
+        // 当所有返回的promise均成功时返回成功结果
+        return Promise.all(PromiseAll)
+    },
+    // 修改全部产品状态
+    updateAllChecked({ dispatch, state }, isChecked) {
+        let PromiseAll = []
+        state.cartList[0].cartInfoList.forEach(item => {
+            let promise = dispatch('updateCheckedById', {
+                skuId: item.skuId,
+                isChecked
+            })
+            PromiseAll.push(promise)
+        })
+        return Promise.all(PromiseAll)
     }
 }
 const mutations = {
