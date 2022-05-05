@@ -7,10 +7,16 @@
                 <div class="container">
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
-                        <p>
+                        <!-- 未登录时显示 -->
+                        <p v-if="!userName">
                             <span>请</span>
                             <router-link to="/login">登录</router-link>
                             <router-link to="/register" class="register">免费注册</router-link>
+                        </p>
+                        <!-- 已登录时显示 -->
+                        <p v-else>
+                            <a href="">{{userName}}</a>
+                            <a herf="" class="register" @click="logout">退出登录</a>
                         </p>
                     </div>
                     <div class="typeList">
@@ -44,6 +50,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
     export default {
       name: 'Header',
       data() {
@@ -64,7 +71,17 @@
                   location.query = this.$route.query
               }
               this.$router.push(location)
-
+          },
+          // 退出登录
+          async logout(){
+            // 1发请求通知服务器退出登录
+            // 2清除项目当中的数据
+            try {
+                await this.$store.dispatch('userLogout')
+                this.$router.push('/home')
+            } catch (error) {
+                alert(error.message)
+            }
           }
       },
       // 通过全局事件总线清除关键字
@@ -73,11 +90,19 @@
               this.keyword = ''
           })
       },
+      computed:{
+          // 用户信息
+          ...mapState({
+              userName:(state) => {
+                return state.user.userInfo.name
+          }
+          })
+      }
     }
 </script>
 
 <style lang="less">
-.outer {
+    .outer {
     .header {
         &>.top {
             background-color: #eaeaea;
@@ -173,5 +198,5 @@
             }
         }
     }
-}
+    }
 </style>

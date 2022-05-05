@@ -94,4 +94,47 @@ export const reqUserRegister = (data) => {
         method: 'post',
         data
     })
+};
+
+// 用户登录 /api/user/passport/login  method:post  参数：phone password
+export const reqUserLogin = (data) => {
+    return requests({
+        url: '/user/passport/login',
+        method: 'post',
+        data
+    })
+};
+
+// 获取用户信息（需要token）
+// /api/user/passport/auth/getUserInfo  method:get
+export const reqUserInfo = () => {
+    return requests({
+        url: '/user/passport/auth/getUserInfo',
+        method:'get'
+    })
+};
+
+// 退出登录 /api/user/passport/logout  method:get
+export const reqLogout = () => {
+    return requests({
+        url: '/user/passport/logout',
+        method:'get'
+    })
+};
+
+// 获取用户付款地址信息
+// /api/user/userAddress/auth/findUserAddressList method:get
+export const reqAddressInfo = () => {
+    return requests({
+        url: '/user/userAddress/auth/findUserAddressList',
+        method:'get'
+    })
+};
+
+// 获取商品清单 /api/order/auth/trade method；get
+export const reqOrderInfo = () => {
+    return requests({
+        url: '/order/auth/trade',
+        method:'get'
+    })
 }

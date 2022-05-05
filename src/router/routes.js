@@ -8,6 +8,7 @@ import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 
 export default [
     {
@@ -63,6 +64,14 @@ export default [
         path: "/shopcart",
         name:'ShopCart',
         component: ShopCart,
+        meta: {
+            showFooter:true
+        }
+    },
+    {
+        path: "/trade",
+        name:'Trade',
+        component: Trade,
         meta: {
             showFooter:true
         }

@@ -76,7 +76,7 @@
             ...mapState({
                 categoryList:(state) => {
                     return state.home.categoryList
-                }
+            }
             })
         },
         methods: {
