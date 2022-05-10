@@ -15,13 +15,13 @@ vue2 + vue-router + vuex + axios + mock.js(模拟数据) + ES6 + less
 
 ### Project setup
 ```
+###
 npm install
 
 # Compiles and hot-reloads for
 npm run serve
 
 # Compiles and minifies for production
-
 npm run build
 
 # Lints and fixes files
