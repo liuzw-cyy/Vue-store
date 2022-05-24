@@ -48,8 +48,8 @@
             <li>夺宝岛</li>
             <li>DIY装机</li>
             <li>延保服务</li>
-            <li>尚品汇E卡</li>
-            <li>尚品汇通信</li>
+            <li>京东E卡</li>
+            <li>京东通信</li>
           </ul>
         </div>
         <div class="footerItem">
@@ -84,21 +84,21 @@
             <span class="space"></span>
           </li>
           <li>
-            关于我们
+            手机京东
             <span class="space"></span>
           </li>
           <li>
-            营销中心
+            京东社区
             <span class="space"></span>
           </li>
           <li>
-            友情链接
+            隐私政策
             <span class="space"></span>
           </li>
-          <li>关于我们</li>
+          <li>京东公益</li>
         </ul>
-        <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-        <p>京ICP备19006430号</p>
+        <a href="//img14.360buyimg.com/da/jfs/t256/349/769670066/270505/3b03e0bb/53f16c24N7c04d9e9.jpg" target="_blank">互联网药品信息服务资格证编号(京)-经营性-2014-0008</a>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11000002000088" target="_blank">京公网安备 11000002000088号</a>
       </div>
     </div>
   </div>
@@ -164,8 +164,8 @@ export default {
           }
         }
       }
-
-      p {
+      a {
+        display: block;
         margin: 10px 0;
         text-align: center;
       }

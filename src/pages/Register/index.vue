@@ -60,7 +60,7 @@
          v-validate="{ required: true, 'agree':true}"
          :class="{ invalid: errors.has('agree') }"
          />
-        <span>同意协议并注册《尚品汇用户协议》</span>
+        <span>同意协议并注册《京东用户协议》</span>
         <span class="error-msg">{{ errors.first("agree") }}</span>
       </div>
       <div class="btn">
@@ -76,13 +76,12 @@
         <li>联系客服</li>
         <li>商家入驻</li>
         <li>营销中心</li>
-        <li>手机尚品汇</li>
+        <li>手机京东</li>
         <li>销售联盟</li>
-        <li>尚品汇社区</li>
+        <li>京东社区</li>
       </ul>
-      <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
-      <div class="beian">京ICP备19006430号
-      </div>
+      <a class="footer" href="//img14.360buyimg.com/da/jfs/t256/349/769670066/270505/3b03e0bb/53f16c24N7c04d9e9.jpg" target="_blank">互联网药品信息服务资格证编号(京)-经营性-2014-0008</a>
+      <a class="footer" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11000002000088" target="_blank">京公网安备 11000002000088号</a>
     </div>
   </div>
 </template>
@@ -246,4 +245,9 @@
       }
     }
   }
+  .footer {
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+      }
 </style>

@@ -6,7 +6,7 @@
             <div class="top">
                 <div class="container">
                     <div class="loginList">
-                        <p>尚品汇欢迎您！</p>
+                        <p>京东欢迎您！</p>
                         <!-- 未登录时显示 -->
                         <p v-if="!userName">
                             <span>请</span>
@@ -22,10 +22,10 @@
                     <div class="typeList">
                         <router-link to="/center">我的订单</router-link>
                         <router-link to="/shopcart">我的购物车</router-link>
-                        <a href="###">我的尚品汇</a>
-                        <a href="###">尚品汇会员</a>
+                        <a href="###">我的京东</a>
+                        <a href="###">京东会员</a>
                         <a href="###">企业采购</a>
-                        <a href="###">关注尚品汇</a>
+                        <a href="###">客户服务</a>
                         <a href="###">合作招商</a>
                         <a href="###">商家后台</a>
                     </div>
@@ -35,7 +35,7 @@
             <div class="bottom">
                 <h1 class="logoArea">
                     <router-link class="logo" to="/home">
-                        <img src="./images/logo.png" alt="">
+                        <img src="./images/logo.jpg" alt="">
                     </router-link >
                 </h1>
                 <div class="searchArea">
@@ -156,8 +156,9 @@ import {mapState} from 'vuex'
 
                 .logo {
                     img {
-                        width: 175px;
-                        margin: 25px 45px;
+                        width: 160px;
+                        height: 56px;
+                        margin: 15px 35px;
                     }
                 }
             }
