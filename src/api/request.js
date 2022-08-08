@@ -30,13 +30,15 @@ requests.interceptors.request.use((config) => {
 })
 
 // 响应拦截器
-requests.interceptors.response.use((res) => {
+requests.interceptors.response.use(
+  (res) => {
     // 进度条结束
     nprogress.done()
     return res.data
-}, (error) => {
+  },
+  (error) => {
     // 响应失败的回调函数
-    return Promise.reject(new Error('false'))
+    return Promise.reject(new Error(error))
 })
 
 export default requests;
