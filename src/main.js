@@ -40,6 +40,9 @@ import { Button, MessageBox } from 'element-ui';
 Vue.component(Button.name, Button);
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+// MessageBox 依赖的样式按需引入
+import 'element-ui/lib/theme-chalk/message-box.css';
 
 Vue.config.productionTip = false
 
