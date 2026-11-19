@@ -3,14 +3,22 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <div class="address clearFix" v-for="address in addressInfo" :key="address.id">
-        <span class="username" :class="{selected:address.isDefault==1}" >{{address.consignee}}</span>
-        <p @click="changeDefault(address, addressInfo)">
-          <span class="s1">{{address.fullAddress}}</span>
-          <span class="s2">{{address.phoneNum}}</span>
-          <span class="s3" v-show="address.isDefault==1">默认地址</span>
-        </p>
+      <template v-if="addressInfo.length">
+        <div class="address clearFix" v-for="address in addressInfo" :key="address.id">
+          <span class="username" :class="{selected:address.isDefault==1}" >{{address.consignee}}</span>
+          <p @click="changeDefault(address, addressInfo)">
+            <span class="s1">{{address.fullAddress}}</span>
+            <span class="s2">{{address.phoneNum}}</span>
+            <span class="s3" v-show="address.isDefault==1">默认地址</span>
+          </p>
+        </div>
+      </template>
+      <div class="trade-state" v-else-if="addressLoading">正在获取收货地址…</div>
+      <div class="trade-state" v-else-if="addressError">
+        {{ addressError }}
+        <a href="javascript:void(0)" @click="fetchAddress">重试</a>
       </div>
+      <div class="trade-state" v-else>暂无收货地址，请先在个人中心添加</div>
       <div class="line"></div>
       <h5 class="pay">支付方式</h5>
       <div class="address clearFix">
@@ -29,20 +37,28 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix" v-for="(order, index) in orderInfo.detailArrayList" :key="index">
-          <li>
-            <img :src="order.imgUrl" style="width:100px; heigth:100px">
-          </li>
-          <li>
-            <p>{{order.skuName}}</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥{{order.orderPrice}}</h3>
-          </li>
-          <li>X{{order.skuNum}}</li>
-          <li>有货</li>
-        </ul>
+        <div class="trade-state" v-if="tradeLoading">正在获取商品清单…</div>
+        <div class="trade-state" v-else-if="tradeError">
+          {{ tradeError }}
+          <a href="javascript:void(0)" @click="verifyAndLoadTrade">重试</a>
+          <a href="javascript:void(0)" @click="$router.replace('/shopcart')">返回购物车</a>
+        </div>
+        <template v-else>
+          <ul class="list clearFix" v-for="(order, index) in orderInfo.detailArrayList" :key="index">
+            <li>
+              <img :src="order.imgUrl" :alt="order.skuName" style="width:100px; heigth:100px">
+            </li>
+            <li>
+              <p>{{order.skuName}}</p>
+              <h4>7天无理由退货</h4>
+            </li>
+            <li>
+              <h3>￥{{order.orderPrice}}</h3>
+            </li>
+            <li>X{{order.skuNum}}</li>
+            <li>有货</li>
+          </ul>
+        </template>
       </div>
       <div class="bbs">
         <h5>买家留言：</h5>
@@ -73,7 +89,7 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥{{orderInfo.totalAmount}}</span></div>
+      <div class="price">应付金额:<span>¥{{orderInfo.totalAmount}}</span></div>
       <div class="receiveInfo">
         寄送至:
         <span>{{userDefaultAddress.fullAddress}}</span>
@@ -89,17 +105,23 @@
 
 <script>
 import { mapState } from "vuex";
+// 与 ShopCart 页面共用同一选中集合口径，用于订单范围复核
+import { filterSelected } from '@/utils/cartCalc'
   export default {
     name: 'Trade',
     data() {
       return {
         // 收集留言信息
-        message:''
+        message:'',
+        tradeLoading: false,
+        tradeError: '',
+        addressLoading: false,
+        addressError: ''
       }
     },
     mounted() {
-      this.$store.dispatch('getUserAddress');
-      this.$store.dispatch('getOrderInfo');
+      this.fetchAddress();
+      this.verifyAndLoadTrade();
     },
     computed:{
       ...mapState({
@@ -117,6 +139,42 @@ import { mapState } from "vuex";
       }
     },
     methods: {
+      // 获取用户收货地址
+      async fetchAddress() {
+        this.addressLoading = true
+        this.addressError = ''
+        try {
+          await this.$store.dispatch('getUserAddress')
+        } catch (error) {
+          this.addressError = error.message || '收货地址获取失败，请重试'
+        } finally {
+          this.addressLoading = false
+        }
+      },
+      // 拉取订单确认数据，并与购物车勾选集合复核范围与数量（skuId 集合相等且逐个 skuNum 一致）
+      async verifyAndLoadTrade() {
+        this.tradeLoading = true
+        this.tradeError = ''
+        try {
+          await this.$store.dispatch('getOrderInfo')
+        } catch (error) {
+          this.tradeError = error.message || '订单确认信息获取失败，请重试'
+          this.tradeLoading = false
+          return
+        }
+        this.tradeLoading = false
+        const selectedList = filterSelected(this.$store.getters.cartList.cartInfoList)
+        const detailList = this.orderInfo.detailArrayList || []
+        const scopeMatched = selectedList.length === detailList.length && selectedList.every(item => {
+          const matched = detailList.find(detail => detail.skuId == item.skuId)
+          return matched && matched.skuNum == item.skuNum
+        })
+        if (!scopeMatched) {
+          // 中止进入结算：回到购物车页并明确提示，价格差异不触发中止
+          this.$router.replace('/shopcart')
+          this.$alert('购物车已更新，请确认后重新结算', '提示')
+        }
+      },
       // 修改默认地址
       changeDefault(address, addressInfo){
         addressInfo.forEach(item => {
@@ -168,6 +226,17 @@ import { mapState } from "vuex";
       border: 1px solid rgb(221, 221, 221);
       padding: 25px;
       box-sizing: border-box;
+
+      .trade-state {
+        padding: 20px 0;
+        text-align: center;
+        color: #666;
+
+        a {
+          color: #e1251b;
+          margin-left: 10px;
+        }
+      }
 
       .receive,
       .pay {
